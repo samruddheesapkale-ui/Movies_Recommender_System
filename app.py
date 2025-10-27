@@ -24,11 +24,21 @@ def recommend(movie_name):
         recommended_movies_posters.append(fetch_poster(movie_id))
     return recommended_movies,recommended_movies_posters  # 👈 moved outside the loop!
 
-# Load data
-movies_dict = pickle.load(open('movies_dict.pkl', 'rb'))
-movies = pd.DataFrame(movies_dict)
 
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+# Upload pickle files manually
+movies_file = st.file_uploader("Upload movies_dict.pkl", type="pkl")
+similarity_file = st.file_uploader("Upload similarity.pkl", type="pkl")
+
+if movies_file is not None and similarity_file is not None:
+    movies_dict = pickle.load(movies_file)
+    movies = pd.DataFrame(movies_dict)
+    similarity = pickle.load(similarity_file)
+    st.success("✅ Files loaded successfully! Now you can use the recommender system.")
+
+    # ⬇️ Keep the rest of your code (like recommend() function etc.) here ⬇️
+
+else:
+    st.warning("⚠️ Please upload both .pkl files to start.")
 
 # Streamlit UI
 st.title('🎬 Movie Recommendation System')
